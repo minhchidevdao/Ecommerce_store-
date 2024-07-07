@@ -55,7 +55,12 @@ class BrandController extends Controller
     public function edit(Request $request, $id)
     {
         $brand = Brand::find($id);
-        return view('admin.Brands.edit', compact('brand'));
+        if(empty($brand)){
+            Session::flash('error', 'Brand not found!');
+            return redirect()->route('brand.show');
+        }else{
+            return view('admin.Brands.edit', compact('brand'));
+        }
     }
     public function update(Request $request, $id)
     {

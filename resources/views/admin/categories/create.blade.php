@@ -119,12 +119,9 @@
                         }
 
                         if (errors['slug']) {
-                            $('#slug').addClass('is-invalid').siblings('p.invalid-feedback')
-                                .html(errors['slug']);
+                            $('#slug').addClass('is-invalid').siblings('p.invalid-feedback').html(errors['slug']);
                         } else {
-
-                            $('#slug').removeClass('is-invalid').siblings('p.invalid-feedback')
-                                .html("");
+                            $('#slug').removeClass('is-invalid').siblings('p.invalid-feedback').html("");
                         }
                     }
                 },

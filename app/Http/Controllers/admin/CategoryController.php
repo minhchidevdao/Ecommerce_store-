@@ -114,7 +114,13 @@ class CategoryController extends Controller
 
     {
         $categories = Category::findOrFail($id);
-        return view('admin.categories.edit', compact('categories'));
+        if(empty($categories)){
+            Session::flash('error', 'categories not found!');
+            return redirect()->route('admin.categories');
+        }else{
+            return view('admin.categories.edit', compact('categories'));
+        }
+
     }
 
     /**

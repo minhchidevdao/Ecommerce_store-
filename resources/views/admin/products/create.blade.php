@@ -8,7 +8,7 @@
                     <h1>Create Product</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="products.html" class="btn btn-primary">Back</a>
+                    <a href="{{ route('product.index')}}" class="btn btn-primary">Back</a>
                 </div>
             </div>
         </div>
@@ -29,6 +29,7 @@
                                             <label for="title">Title</label>
                                             <input type="text" name="title" id="title" class="form-control"
                                                 placeholder="Title">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -43,6 +44,7 @@
                                             <label for="description">Description</label>
                                             <textarea name="description" id="description" cols="30" rows="10" class="summernote"
                                                 placeholder="Description"></textarea>
+                                            <p class="error "></p>
                                         </div>
                                     </div>
                                 </div>
@@ -58,6 +60,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" id="product-garllery">
+
+                        </div>
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Pricing</h2>
@@ -65,8 +70,8 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="price">Price</label>
-                                            <input type="text" name="price" id="price" class="form-control"
-                                                placeholder="Price">
+                                            <input type="text" name="price" id="price" class="form-control" placeholder="Price">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -90,8 +95,8 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="sku">SKU (Stock Keeping Unit)</label>
-                                            <input type="text" name="sku" id="sku" class="form-control"
-                                                placeholder="sku">
+                                            <input type="text" name="sku" id="sku" class="form-control"placeholder="sku">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -105,14 +110,14 @@
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="hidden" value="No" name="track_qty" id="hidden_track_qty">
-                                                <input class="custom-control-input" type="checkbox" value="Yes" id="track_qty"
-                                                     checked>
+                                                <input class="custom-control-input" type="checkbox" value="Yes" id="track_qty" checked>
                                                 <label for="track_qty" class="custom-control-label">Track Quantity</label>
+
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="number" min="0" name="qty" id="qty"
-                                                class="form-control" placeholder="Qty">
+                                            <input type="number" min="0" name="qty" id="qty" class="form-control" placeholder="Qty">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -143,6 +148,7 @@
                                             @foreach ($category as $item)
                                                 <option  value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
+                                            <p class="error"></p>
 
                                         @endif
 
@@ -187,7 +193,7 @@
 
                 <div class="pb-5 pt-3">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
+                    <a href="{{ route('product.index')}}" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
             </div>
         </form>
@@ -219,50 +225,48 @@
         $("#productForm").submit(function(event){
             event.preventDefault();
             let element = $(this);
+            $("button[type=submit]").prop('disabled', true); // tránh việc người dùng bấm liên tục vào nút submit khi yêu cầu đang được xử lý
+            // Update the hidden input value based on the checkbox state
+            if ($('#track_qty').is(':checked'))
+            {
+                $('#hidden_track_qty').val('Yes');
+            } else
+            {
+                $('#hidden_track_qty').val('No');
+            }
 
             $.ajax({
+
                 url: `{{ route("product.store") }}`,
                 type: 'POST',
                 data: element.serializeArray(),
                 dataType: 'json',
                 success: function(response){
-                    $("button[type=submit]").prop('disabled', false);
-                    if(response['status'] == true){
+                    $("button[type=submit]").prop('disabled', false); // sau khi dữ liếu sử lý xong thì mở lại chức năng submit
+                    if(response['status'] === true){
+                        alert(response.message);
+                        window.location.href="{{ route('product.index')}}";
 
                     }else{
                         let errors = response['errors'];
-                        if(errors['title']){
-                            $("#title").addClass('is-invalid').sibling('p.invalid-feedback').html(errors['title']); 
 
-                            /*
-                                tìm phần tử có id= title và thêm vào class thuộc tính:'is-invalid'
-                                tìm phần tử anh em(sibling) của phần tử title có thẻ p và class là: invalid-feedback
-                                điều này giả định rằng phần tử thông báo lỗi nằm ngay sau phần tử title, sau đó cập nhật
-                                nội dung phần tử thông báo lỗi với lỗi: errors['title']
-                            */
-                        }else {
-                            $("#title").removeClass('is-invalid').sibling('p.invalid-feedback').html("");
-                            // Nếu không có lỗi thì Xóa thuộc tính: is-invalid, làm trống nội dung phần tử báo lỗi và xóa bất kỳ thông báo lỗi nào trước đó
-                        }
+                        $(".error").removeClass('invalid-feedback').html('');
+                        $("input[type='text'], select, input[type='number']").removeClass('is-invalid');
+                        $.each(errors, function(key,value){
+                            $(`#${key}`).addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(value);
+                        });
+
+
                     }
-
                 },
+
+
                 error: function(){
                     console.log("Some thing went wrong");
                 }
             });
         });
 
-        // phát hiện xem thẻ có id = hidden_track_qty có thay đổi value hay không
-        $("#track_qty").ready(function(){
-            $("#track_qty").change(function() {
-                if($(this).is(':checked')){
-                    $("#hidden_track_qty").val('Yes');
-                }else{
-                    $("#hidden_track_qty").val('No');
-                }
-            });
-        });
 
         $("#category").change(function(){
             let category_id = $(this).val();
@@ -273,8 +277,9 @@
                 dataType: 'json',
                 success: function(response){
                     $("#sub_category").find("option").not(":first").remove();    //Sử dụng jQuery để chọn phần tử HTML có ID là sub_category sau đó tìm các phần tử option bên trong, lọc ra các phần tử ngoại trừ phần tử đầu tiên và xóa chúng
+
                     $.each(response["subCategories"], function(key, item){    // Duyệt qua mảng subCategories trả về từ phản hồi AJAX,  chọn
-                        $("#sub_category").append(`<option = "${item.id}"> ${item.name} </option>`) //  chọn sub_category, tạo một phần tử <option> mới và thêm vào bên trong phần tử sub_category
+                        $("#sub_category").append(`<option value= "${item.id}"> ${item.name} </option>`) //  chọn sub_category, tạo một phần tử <option> mới và thêm vào bên trong phần tử sub_category
                     });
 
                 },
@@ -282,7 +287,51 @@
                     console.log("Some thing went wrong");
                 }
             });
-        })
+        });
+
+
+         // tạo 1 khu vực để tải lên tệp tin cho phép người dùng kéo thả hoặc nhấp vào khu vực đó để upload file lên
+        Dropzone.autoDiscover = false; // vô hiệu hóa việc tự động phát hiện dropzone để tránh các lỗi không kiểm soát được
+        const dropzone = $("#image").dropzone({ // khởi tạo thủ công dropzone có id 'image'
+            init: function() {
+                this.on('addedfile', function(file) { // sự kiện này sẽ kích hoạt khi có 1 file upload vào
+                    if (this.files.length > 4) { // nếu có nhiều hơn 1 tệp thì sẽ xóa tệp đầu tiên đi
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: `{{ route('temp-images.create') }}`,
+            maxFiles: 4,
+            paramName: 'image',
+            addRemoveLinks: true, // thêm 1 liên kết cho người dùng xóa tệp tin đã thêm
+            acceptedFiles: "image/jpeg, image/png, image/gif", // các loại tệp tin được chấp nhận
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(file, response) {
+                let html = `
+                    <div class="col-md-3">
+                        <div class="card" id="image-row-${response.image_id}">
+                            <input type="hidden" name="image_array[]" value="${response.image_id}">
+                            <img class="card-img-top" src="${response.imagePath}" alt="Card image cap">
+                            <div class="card-body">
+                                <a href="javascript:void(0)" onclick="deleteImage(${response.image_id})" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>`;
+                $("#product-garllery").append(html);
+                this.removeFile(file);
+            },
+
+            error: function(file, response) {
+                console.log("Failed to upload file:", response); // Log thông báo lỗi
+            }
+
+        });
+
+        function deleteImage(id){
+            $("#image-row-"+id).closest('.col-md-3').remove();
+        }
     </script>
 
 @endsection

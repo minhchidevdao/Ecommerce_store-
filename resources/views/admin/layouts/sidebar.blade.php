@@ -35,7 +35,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="products.html" class="nav-link">
+                <a href="{{ route('product.index')}}" class="nav-link">
                     <i class="nav-icon fas fa-tag"></i>
                     <p>Products</p>
                 </a>
