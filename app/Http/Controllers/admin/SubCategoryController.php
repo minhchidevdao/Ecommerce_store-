@@ -54,6 +54,8 @@ class SubCategoryController extends Controller
             $sub_category->slug  = $request->slug;
             $sub_category->category_id  = $request->category;
             $sub_category->status  = $request->status;
+            $sub_category->showHome  = $request->showHome;
+
             $sub_category->save();
 
             Session::flash('success', 'Sub Category added successfully');
@@ -101,6 +103,7 @@ class SubCategoryController extends Controller
             $sub_category->slug  = $request->slug;
             $sub_category->category_id  = $request->category;
             $sub_category->status  = $request->status;
+            $sub_category->showHome  = $request->showHome;
             $sub_category->save();
 
             Session::flash('success', 'Sub Category updated successfully');

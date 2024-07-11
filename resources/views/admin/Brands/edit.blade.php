@@ -52,12 +52,13 @@
                                     </select>
                                 </div>
                             </div>
+
                         </div>
                         {{-- div image --}}
 
 
                         <div class="pb-5 pt-3">
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                             <a href="{{ route('brand.show') }}" class="btn btn-outline-dark ml-3">Cancel</a>
                         </div>
                     </form>
@@ -77,7 +78,7 @@
 
             $.ajax({
                 url: '{{ route('brand.update', $brand->id) }}', // Đảm bảo route đúng
-                type: 'POST',
+                type: 'PUT',
                 data: element.serializeArray(),
                 dataType: 'json',
                 success: function(response) {
@@ -131,7 +132,7 @@
                 error: function(jqXHR, exception) {
                     console.log("something went wrong");
                     // Hiển thị thông báo lỗi chi tiết
-                    alert('Failed to create category. Please try again.');
+                    alert('Failed to update brand. Please try again.');
                 }
             });
 

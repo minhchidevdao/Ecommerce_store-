@@ -44,7 +44,7 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th width="60">ID</th>
+                            <th width="60">#</th>
                             <th width="80"></th>
                             <th>Product</th>
                             <th>Price</th>

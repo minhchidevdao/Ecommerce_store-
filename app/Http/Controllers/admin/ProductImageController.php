@@ -60,9 +60,13 @@ class ProductImageController extends Controller
          // Small image
         $destPathSmall = public_path().'/uploads/product/small/'.$imageName;
         $image = Image::make($sourcePath);
-        $image->resize(300, 300, function($constraint){
-            $constraint->aspectRatio();
-        })->orientate();
+        // $image->resize(300, 300, function($constraint){
+        //     $constraint->aspectRatio();
+        // })->orientate()
+        $image->resize(300, 300, function ($constraint) {
+            // $constraint->aspectRatio();
+            // $constraint->upsize();
+        })->orientate();;
         $image->save($destPathSmall);
 
 
@@ -70,7 +74,7 @@ class ProductImageController extends Controller
             'status' => true,
             'image_id' => $productImage->id,
             'imagePath' => asset('uploads/product/small/'.$productImage->image),
-           
+
             'message' => 'Image updated successfully',
         ]);
 

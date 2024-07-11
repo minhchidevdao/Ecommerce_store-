@@ -12,6 +12,8 @@ use App\Http\Controllers\admin\ProductSubCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\FrontController;
+use App\Http\Controllers\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +26,14 @@ use App\Http\Controllers\admin\TempImagesController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+// Front-end Route
+
+Route::get('/', [FrontController::class, 'index'])->name('front.home');
+Route::get('shop/{categorySlug?}/{subCategorySlug?}', [ShopController::class, 'index'])->name('front.shop');
+
 
 // admin authentication
 Route::prefix('/admin')->group(function () {
