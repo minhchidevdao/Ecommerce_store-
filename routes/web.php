@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\ProductSubCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 
@@ -32,14 +33,20 @@ use App\Http\Controllers\ShopController;
 // Front-end Route
 
 Route::get('/', [FrontController::class, 'index'])->name('front.home');
+Route::get('product/{slug}', [ShopController::class, 'product'])->name('shop.product');
 Route::get('shop/{categorySlug?}/{subCategorySlug?}', [ShopController::class, 'index'])->name('front.shop');
+Route::get('/cart', [CartController::class, 'cart'])->name('front.cart');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('front.addToCart');
+Route::post('/update-cart', [CartController::class, 'updateCart'])->name('front.updateCart');
+Route::post('delete-cart', [CartController::class, 'deleteCart'])->name('front.deleteCart');
+
 
 
 // admin authentication
 Route::prefix('/admin')->group(function () {
     Route::middleware('admin.guest')->group(function () {
 
-        Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+        Route::get('/', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/login', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
     });
 
@@ -81,6 +88,7 @@ Route::prefix('/admin')->group(function () {
         Route::get('/product/profile{id}', [ProductController::class, 'show']) -> name('product.show');
         Route::post('/product/store', [ProductController::class, 'store']) -> name('product.store');
         Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']) -> name('product.delete');
+        Route::get('/get-products', [ProductController::class, 'getProduct'])->name('product.getProduct');
 
 
         // product-subcategorie

@@ -18,6 +18,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin-assets/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin-assets/plugins/select2/css/select2.min.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -78,9 +79,9 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="{{ asset('admin-assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+                <img src="{{ asset('admin-assets/img/MINHCHI_LOGO.png') }}" alt="MINHCHI LOGO"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Shop</span>
+                <span class="brand-text font-weight-light">Minh Chí</span>
             </a>
             <!-- Sidebar -->
             @include('admin.layouts.sidebar')
@@ -109,6 +110,7 @@
 
     <script src="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/summernote/summernote.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/plugins/select2/js/select2.min.js') }}"></script>
 
     <!-- AdminLTE App -->
     <script src="{{ asset('admin-assets/js/adminlte.min.js') }}"></script>

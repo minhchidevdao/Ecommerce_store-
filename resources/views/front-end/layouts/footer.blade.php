@@ -42,7 +42,7 @@
 			<div class="row">
 				<div class="col-12 mt-3">
 					<div class="copy-right text-center">
-						<p>© Copyright 2022 Amazing Shop. All Rights Reserved</p>
+						<p>© Copyright 2024 MinhChi Shop. Laravel</p>
 					</div>
 				</div>
 			</div>
@@ -68,6 +68,27 @@ function myFunction() {
   } else {
     navbar.classList.remove("sticky");
   }
+}
+
+function addToCart(id){
+
+    $.ajax({
+        url: `{{ route('front.addToCart') }}`,
+        type: 'POST',
+        data: {id:id},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response){
+            if(response.status == true){
+                location.reload();
+            }else{
+                alert(response.message);
+            }
+        }
+
+    });
 }
 </script>
 @yield('js')

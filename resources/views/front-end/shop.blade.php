@@ -114,25 +114,26 @@
                                 <div class="col-md-4">
                                     <div class="card product-card">
                                         <div class="product-image position-relative">
-                                            @if (!empty($imageProduct))
-                                                <a href="" class="product-img"><img class="card-img-top" src="{{ asset('uploads/product/small/'.$imageProduct->image )}}" alt=""></a>
-                                            @else
-                                                <a href="" class="product-img"><img class="card-img-top" src="{{ asset('uploads/product/small/default_product.jpg')}}" alt=""></a>
-                                            @endif
-
+                                            <a href="{{ route('shop.product', $products->slug)}}" class="product-img">
+                                                @if (!empty($imageProduct))
+                                                    <img class="card-img-top" src="{{ asset('uploads/product/small/'.$imageProduct->image )}}" alt="">
+                                                @else
+                                                    <img class="card-img-top" src="{{ asset('uploads/product/small/default_product.jpg')}}" alt="">
+                                                @endif
+                                            </a>
                                             <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                             <div class="product-action">
-                                                <a class="btn btn-dark" href="#">
+                                                <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$products->id}})">
                                                     <i class="fa fa-shopping-cart"></i> Add To Cart
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="card-body text-center mt-3">
-                                            <a class="h6 link" href="product.php">{{$products->title}}</a>
+                                            <a class="h6 link" href="{{ route('shop.product', $products->slug)}}">{{$products->title}}</a>
                                             <div class="price mt-2">
-                                                <span class="h5"><strong>{{$products->compare_price}}</strong></span>
-                                                <span class="h6 text-underline"><del>{{$products->price}}</del></span>
+                                                <span class="h5"><strong>{{$products->price}}</strong></span>
+                                                <span class="h6 text-underline"><del>{{$products->compare_price}}</del></span>
                                             </div>
                                         </div>
                                     </div>

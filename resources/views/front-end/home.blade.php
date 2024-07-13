@@ -140,21 +140,27 @@
                         <div class="col-md-3">
                             <div class="card product-card">
                                 <div class="product-image position-relative">
-                                    <a href="" class="product-img"><img class="card-img-top" src="{{ asset('uploads/product/small/'.$imageProduct->image)}}" alt=""></a>
+                                    <a href="{{route('shop.product', $featuredProducts->slug)}}" class="product-img">
+                                        @if (!empty($imageProduct))
+                                            <img class="card-img-top" src="{{ asset('uploads/product/small/'.$imageProduct->image )}}" alt="">
+                                        @else
+                                            <img class="card-img-top" src="{{ asset('uploads/product/small/default_product.jpg')}}" alt="">
+                                        @endif
+                                    </a>
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="#">
+                                        <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$featuredProducts->id}})">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-body text-center mt-3">
-                                    <a class="h6 link" href="product.php">{{ $featuredProducts->title }}</a>
+                                    <a class="h6 link" href="{{route('shop.product', $featuredProducts->slug)}}">{{ $featuredProducts->title }}</a>
                                     <div class="price mt-2">
                                         @if ($featuredProducts->compare_price > 0)
-                                            <span class="h5"><strong>{{ $featuredProducts->compare_price }}</strong></span>
-                                            <span class="h6 text-underline"><del>{{ $featuredProducts->price }}</del></span>
+                                            <span class="h5"><strong>{{ $featuredProducts->price }}</strong></span>
+                                            <span class="h6 text-underline"><del>{{ $featuredProducts->compare_price }}</del></span>
                                         @else
                                             <span class="h5"><strong>{{ $featuredProducts->price }}</strong></span>
                                         @endif
@@ -187,27 +193,28 @@
                         <div class="col-md-3">
                             <div class="card product-card">
                                 <div class="product-image position-relative">
-                                    @if (!empty($imageProduct) )
-                                        <a href="" class="product-img"><img class="card-img-top" src="{{  asset('uploads/product/small/'.$imageProduct->image)}}" alt=""></a>
-                                    @else
-                                        <a href="" class="product-img"><img class="card-img-top" src="{{  asset('uploads/product/small/default_product.jpg') }}" alt=""></a>
-
-                                    @endif
+                                    <a href="{{ route('shop.product', $latestProducts->slug)}}" class="product-img">
+                                        @if (!empty($imageProduct) )
+                                            <img class="card-img-top" src="{{  asset('uploads/product/small/'.$imageProduct->image)}}" alt="">
+                                        @else
+                                            <img class="card-img-top" src="{{  asset('uploads/product/small/default_product.jpg') }}" alt="">
+                                        @endif
+                                    </a>
 
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="#">
+                                        <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$latestProducts->id}})">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-body text-center mt-3">
-                                    <a class="h6 link" href="product.php">{{ $latestProducts->title}}</a>
+                                    <a class="h6 link" href="{{route('shop.product', $latestProducts->slug)}}">{{ $latestProducts->title}}</a>
                                     <div class="price mt-2">
                                         @if ($latestProducts->compare_price > 0)
-                                            <span class="h5"><strong>{{ $latestProducts->compare_price }}</strong></span>
-                                            <span class="h6 text-underline"><del>{{ $latestProducts->price }}</del></span>
+                                            <span class="h5"><strong>{{ $latestProducts->price }}</strong></span>
+                                            <span class="h6 text-underline"><del>{{ $latestProducts->compare_price }}</del></span>
                                         @else
                                             <span class="h5"><strong>{{ $latestProducts->price }}</strong></span>
                                         @endif

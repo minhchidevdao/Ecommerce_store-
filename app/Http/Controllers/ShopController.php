@@ -38,7 +38,6 @@ class ShopController extends Controller
         $brandArray = [];
         if ( !empty($request->get('brand')) ) { // lấy chuỗi brand trên url
             $brandArray = explode(',', $request->get('brand')); // phân tách chuỗi thành 1 mảng bằng dấu phẩy , sau đó gán giá trị vào cho mảng
-            $brandArray = explode(',', $request->get('brand')); // phân tách chuỗi thành 1 mảng bằng dấu phẩy , sau đó gán giá trị vào cho mảng $brandArray
             $products = $products->whereIn('brand_id', $brandArray); // lọc các sản phẩm theo danh sách ID brandArray
         }
 
@@ -79,5 +78,24 @@ class ShopController extends Controller
 
 
         return view('front-end.shop', $data);
+    }
+    public function product($slug){
+
+        $product = Product::where('slug', $slug)->with('product_images')->first();
+        if($product == null){
+            abort(404);
+        }
+
+        $relatedProduct = [];
+        if($product->related_product != ""){
+            $relatedProductArray = explode(',',$product->related_product);
+            $relatedProduct = Product::whereIn('id', $relatedProductArray)->with('product_images')->get();
+        }
+
+        return view('front-end.product', compact('product', 'relatedProduct'));
+
+
+
+
     }
 }
