@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\ProductSubCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
@@ -40,6 +41,26 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('front.a
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('front.updateCart');
 Route::post('delete-cart', [CartController::class, 'deleteCart'])->name('front.deleteCart');
 
+// Authentication User
+Route::prefix('/account')->group(function(){
+    Route::middleware('guest')->group( function(){ // gọi đến middleware guest để kiểm tra xem các route này đã đăng nhập hay chưa, nếu như đã đăng nhập rồi thì sẽ bị chuyển hướng sang route khác ở phần guest
+        Route::get('/register', [AuthController::class, 'register'])->name('account.register');
+        Route::post('/process-register', [AuthController::class, 'processRegister'])->name('account.processRegister');
+        Route::get('/login', [AuthController::class, 'login'])->name('account.login');
+        Route::post('/login', [AuthController::class, 'authenticate'])->name('account.authenticate');
+
+    });
+    Route::middleware('auth')->group(function(){
+        // Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
+        Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+
+
+    });
+
+
+});
+
 
 
 // admin authentication
@@ -48,7 +69,9 @@ Route::prefix('/admin')->group(function () {
 
         Route::get('/', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/login', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
+
     });
+
 
     //
     Route::middleware('admin.auth')->group(function () {
