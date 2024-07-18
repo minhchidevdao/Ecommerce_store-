@@ -40,6 +40,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -115,8 +117,8 @@
 			<div class="right-nav py-0">
 				<a href="{{ route('front.cart') }}" class="ml-3 d-flex pt-2">
 					<i class="fas fa-shopping-cart text-primary"></i>
-                    @if (Cart::count() > 0)
-                        <span class="cart-counter" id="cart-counter">{{ Cart::count()}}</span>
+                    @if (Cart::content()->count() > 0)
+                        <span class="cart-counter" id="cart-counter">{{ Cart::content()->count()}}</span>
                     @endif
 
 				</a>

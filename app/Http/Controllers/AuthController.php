@@ -65,6 +65,10 @@ class AuthController extends Controller
 
             if(Auth::attempt(['email'=>$request->email, 'password'=>$request->password], $request->get('remember'))){
                 $request->session()->regenerate(); // tái tạo lại 1 ID session cho phiên
+
+                if(session()->has('url.intended')){
+                   return redirect(session()->get('url.intended'));
+                }
                 return redirect()->route('account.profile');
 
             }else{

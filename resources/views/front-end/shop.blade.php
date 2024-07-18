@@ -210,8 +210,8 @@
 
         url += '&sort='+$("#sort").val();
 
-
         window.location.href = url;
+
     }
 </script>
 

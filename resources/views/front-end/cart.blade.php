@@ -106,11 +106,19 @@
                                 <div>$5</div>
                             </div>
                             <div class="d-flex justify-content-between summery-end">
-                                <div>Total</div>
+                                <div>Total: </div>
                                 <div>{{Cart::subtotal()}}</div>
                             </div>
                             <div class="pt-5">
-                                <a href="login.php" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                                {{-- @if (Auth::check())
+                                    <a href="{{route('front.checkout')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                                @else
+                                    <a href="{{route('account.login')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+
+                                @endif --}}
+                                <a href="{{route('front.checkout')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+
+
                             </div>
                         </div>
                     </div>

@@ -17,16 +17,6 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -40,6 +30,11 @@ Route::get('/cart', [CartController::class, 'cart'])->name('front.cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('front.addToCart');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('front.updateCart');
 Route::post('delete-cart', [CartController::class, 'deleteCart'])->name('front.deleteCart');
+Route::get('checkout', [CartController::class, 'checkout'])->name('front.checkout');
+Route::post('process-checkout', [CartController::class, 'processCheckout'])->name('front.processCheckout');
+Route::get('thank/{order_id}', [CartController::class, 'thankYou'])->name('front.thankyou');
+
+
 
 // Authentication User
 Route::prefix('/account')->group(function(){
@@ -55,9 +50,7 @@ Route::prefix('/account')->group(function(){
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
 
-
     });
-
 
 });
 

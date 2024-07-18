@@ -56,6 +56,7 @@
 <script src="{{ asset('frontend-asset/js/slick.min.js')}}"></script>
 <script src="{{ asset('frontend-asset/js/custom.js')}}"></script>
 <script src="{{ asset('frontend-asset/js/ion.rangeSlider.min.js')}}"></script>
+
 <script>
 window.onscroll = function() {myFunction()};
 

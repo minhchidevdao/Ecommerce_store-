@@ -31,11 +31,12 @@ class AdminLoginController extends Controller
         if ($validator->passes()) {
             if (Auth::guard('admin')->attempt($request->only('email', 'password'))) {
 
-                $request->session()->regenerate(); // tái tạo lại 1 ID session cho phiên
 
                 $admin = Auth::guard('admin')->user();
 
-                if ($admin->role == 1) {
+                if ($admin && $admin->role == 1) {
+                    $request->session()->regenerate(); // tái tạo lại 1 ID session cho phiên
+
                     return redirect()->route('admin.dashboard')->with('success', 'welcome to dashboard');
                 } else {
                     return redirect()->route('admin.login')->with('error', 'You are not authorized to access admin panel');
