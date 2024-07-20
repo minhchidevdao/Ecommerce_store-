@@ -148,7 +148,7 @@
             $('.delete-category').on('click', function(e) {
                 e.preventDefault(); // ngăn hành vi mặc định của form
                 let categoryId = $(this).data('id'); // lấy giá trị của thuộc tính data-id
-                let url = '{{ route('admin.categories.destroy', ':id') }}';
+                let url = `{{ route('admin.categories.destroy', ':id') }}`;
                 url = url.replace(':id', categoryId);
 
                 if (confirm('Are you sure you want to delete this category?')) {

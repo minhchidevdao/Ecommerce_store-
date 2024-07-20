@@ -93,32 +93,18 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card cart-summery">
-                        <div class="sub-title">
-                            <h2 class="bg-white">Cart Summery</h3>
-                        </div>
+
                         <div class="card-body">
+                            <div class="sub-title">
+                                <h2 class="bg-white">Cart Summery</h3>
+                            </div>
                             <div class="d-flex justify-content-between pb-2">
                                 <div>Subtotal</div>
                                 <div>{{Cart::subtotal()}}</div>
                             </div>
-                            <div class="d-flex justify-content-between pb-2">
-                                <div>Shipping</div>
-                                <div>$5</div>
-                            </div>
-                            <div class="d-flex justify-content-between summery-end">
-                                <div>Total: </div>
-                                <div>{{Cart::subtotal()}}</div>
-                            </div>
-                            <div class="pt-5">
-                                {{-- @if (Auth::check())
-                                    <a href="{{route('front.checkout')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
-                                @else
-                                    <a href="{{route('account.login')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
 
-                                @endif --}}
+                            <div class="pt-3">
                                 <a href="{{route('front.checkout')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
-
-
                             </div>
                         </div>
                     </div>

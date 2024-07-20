@@ -123,7 +123,10 @@
             });
 
 
+
+
         });
+
     </script>
     @yield('js')
 </body>

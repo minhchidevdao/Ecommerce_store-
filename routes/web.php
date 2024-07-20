@@ -9,13 +9,14 @@ use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
+use App\Http\Controllers\admin\ShippingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\admin\TempImagesController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\FrontController;
-use App\Http\Controllers\ShopController;
+use App\Http\Controllers\frontend\AuthController;
+use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\FrontController;
+use App\Http\Controllers\frontend\ShopController;
 
 
 // Route::get('/', function () {
@@ -105,6 +106,14 @@ Route::prefix('/admin')->group(function () {
         Route::post('/product/store', [ProductController::class, 'store']) -> name('product.store');
         Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']) -> name('product.delete');
         Route::get('/get-products', [ProductController::class, 'getProduct'])->name('product.getProduct');
+
+        // Shipping Routes
+        // Route::get('/shipping', [ShippingController::class, 'show'])->name('shipping.show');
+        Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
+        Route::post('/shipping-create', [ShippingController::class, 'store'])->name('shipping.store');
+        Route::get('/shipping/edit/{id}', [ShippingController::class, 'edit'])->name('shipping.edit');
+        Route::put('/shipping-edit/{id}', [ShippingController::class, 'update'])->name('shipping.update');
+        Route::delete('/shipping-delete/{id}', [ShippingController::class, 'destroy'])->name('shipping.delete');
 
 
         // product-subcategorie
