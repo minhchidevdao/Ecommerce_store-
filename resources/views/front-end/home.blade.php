@@ -9,15 +9,15 @@
                     <!-- <img src="images/carousel-1.jpg" class="d-block w-100" alt=""> -->
 
                     <picture>
-                        <source media="(max-width: 799px)" srcset="{{asset('frontend-asset/images/carousel-1-m.jpg')}}" />
-                        <source media="(min-width: 800px)" srcset="{{asset('frontend-asset/images/carousel-1.jpg')}}" />
-                        <img src="{{asset('frontend-asset/images/carousel-1.jpg')}}" alt="" />
+                        <source media="(max-width: 799px)" srcset="{{asset('frontend-asset/images/slide-caulong.png')}}" />
+                        <source media="(min-width: 800px)" srcset="{{asset('frontend-asset/images/slide-caulong.png')}}" />
+                        <img src="{{asset('frontend-asset/images/slide-caulong.png')}}" alt="" />
                     </picture>
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3">
-                            <h1 class="display-4 text-white mb-3">Kids Fashion</h1>
-                            <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
+                            <h1 class="display-4 text-white mb-3">Badminton</h1>
+                            {{-- <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p> --}}
                             <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
                         </div>
                     </div>
@@ -26,15 +26,15 @@
 
 
                     <picture>
-                        <source media="(max-width: 799px)" srcset="{{asset('frontend-asset/images/carousel-2-m.jpg')}}" />
-                        <source media="(min-width: 800px)" srcset="{{asset('frontend-asset/images/carousel-2.jpg')}}" />
-                        <img src="{{asset('frontend-asset/images/carousel-2.jpg')}}" alt="" />
+                        <source media="(max-width: 799px)" srcset="{{asset('frontend-asset/images/slide-caulong-2.png')}}" />
+                        <source media="(min-width: 800px)" srcset="{{asset('frontend-asset/images/slide-caulong-2.png')}}" />
+                        <img src="{{asset('frontend-asset/images/slide-caulong-2.png')}}" alt="" />
                     </picture>
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3">
-                            <h1 class="display-4 text-white mb-3">Womens Fashion</h1>
-                            <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
+                            <h1 class="display-4 text-white mb-3">Badminton</h1>
+                            {{-- <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p> --}}
                             <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
                         </div>
                     </div>
@@ -43,15 +43,15 @@
                     <!-- <img src="images/carousel-3.jpg" class="d-block w-100" alt=""> -->
 
                     <picture>
-                        <source media="(max-width: 799px)" srcset="{{asset('frontend-asset/images/carousel-3-m.jpg')}}" />
-                        <source media="(min-width: 800px)" srcset="{{asset('frontend-asset/images/carousel-3.jpg')}}" />
-                        <img src="{{asset('frontend-asset/images/carousel-3.jpg')}}" alt="" />
+                        <source media="(max-width: 799px)" srcset="{{asset('frontend-asset/images/slide-caulong.png')}}" />
+                        <source media="(min-width: 800px)" srcset="{{asset('frontend-asset/images/slide-caulong.png')}}" />
+                        <img src="{{asset('frontend-asset/images/slide-caulong.png')}}" alt="" />
                     </picture>
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3">
-                            <h1 class="display-4 text-white mb-3">Shop Online at Flat 70% off on Branded Clothes</h1>
-                            <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
+                            <h1 class="display-4 text-white mb-3">Badminton</h1>
+                            {{-- <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p> --}}
                             <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
                         </div>
                     </div>
@@ -159,10 +159,10 @@
                                     <a class="h6 link" href="{{route('shop.product', $featuredProducts->slug)}}">{{ $featuredProducts->title }}</a>
                                     <div class="price mt-2">
                                         @if ($featuredProducts->compare_price > 0)
-                                            <span class="h5"><strong>{{ $featuredProducts->price }}</strong></span>
-                                            <span class="h6 text-underline"><del>{{ $featuredProducts->compare_price }}</del></span>
+                                            <span class="h5"><strong>${{ $featuredProducts->price }}</strong></span>
+                                            <span class="h6 text-underline"><del>${{ $featuredProducts->compare_price }}</del></span>
                                         @else
-                                            <span class="h5"><strong>{{ $featuredProducts->price }}</strong></span>
+                                            <span class="h5"><strong>${{ $featuredProducts->price }}</strong></span>
                                         @endif
 
                                     </div>
@@ -213,10 +213,10 @@
                                     <a class="h6 link" href="{{route('shop.product', $latestProducts->slug)}}">{{ $latestProducts->title}}</a>
                                     <div class="price mt-2">
                                         @if ($latestProducts->compare_price > 0)
-                                            <span class="h5"><strong>{{ $latestProducts->price }}</strong></span>
-                                            <span class="h6 text-underline"><del>{{ $latestProducts->compare_price }}</del></span>
+                                            <span class="h5"><strong>${{ $latestProducts->price }}</strong></span>
+                                            <span class="h6 text-underline"><del>${{ $latestProducts->compare_price }}</del></span>
                                         @else
-                                            <span class="h5"><strong>{{ $latestProducts->price }}</strong></span>
+                                            <span class="h5"><strong>${{ $latestProducts->price }}</strong></span>
                                         @endif
                                     </div>
                                 </div>

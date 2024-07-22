@@ -10,6 +10,7 @@
         @endif
         <div class="col-md-12 text-center py-5">
             <h1>Thank You</h1>
+            <h3>Order id is: {{$id}}</h3>
         </div>
     </section>
 

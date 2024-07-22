@@ -50,7 +50,7 @@
                     </div>
                     <input type="submit" class="btn btn-outline-success" value="Login">
                 </form>
-                <div class="text-center small">Don't have an account? <a class="text-primary" href="register.php">Sign up</a></div>
+                <div class="text-center small">Don't have an account? <a class="text-primary" href="{{ route('account.register')}}">Sign up</a></div>
             </div>
         </div>
     </section>

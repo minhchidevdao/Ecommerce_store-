@@ -122,7 +122,7 @@
                                 @foreach (Cart::content() as $item)
                                     <div class="d-flex justify-content-between pb-2">
                                         <div class="h6">{{$item->name}} X {{$item->qty}}</div>
-                                        <div class="h6">{{$item->price*$item->qty}}</div>
+                                        <div class="h6  ">$ {{$item->price*$item->qty}}</div>
                                     </div>
                                 @endforeach
 
@@ -130,15 +130,15 @@
                                 </div>
                                 <div class="d-flex justify-content-between summery-end">
                                     <div class="h6"><strong>Subtotal</strong></div>
-                                    <div class="h6"><strong>{{Cart::subtotal()}}</strong></div>
+                                    <div class="h6"><strong>${{Cart::subtotal()}}</strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
-                                    <div class="h6"><strong>$0</strong></div>
+                                    <div class="h6"><strong id="shippingCharge">${{ number_format($totalShippingCharge, 2)}}</strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-2 summery-end">
                                     <div class="h5"><strong>Total</strong></div>
-                                    <div class="h5"><strong>{{Cart::subtotal()}}</strong></div>
+                                    <div class="h5"><strong id="grandTotal">${{number_format($grandTotal, 2)}}</strong></div>
                                 </div>
                             </div>
                         </div>
@@ -250,6 +250,23 @@
             }
         });
     });
+
+    $("#country").change(function(){
+        $.ajax({
+            url:`{{ route('front.getOrderSummery')}}`,
+            type: 'POST',
+            data: {country_id: $(this).val()},
+            dataType: 'json',
+            success: function(response){
+                if(response.status === true){
+                    $("#shippingCharge").html('$'+response.shippingCharge);
+                    $("#grandTotal").html('$'+response.grandTotal);
+
+                }
+            }
+        });
+    });
+    
 
 
 

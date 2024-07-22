@@ -132,8 +132,8 @@
                                         <div class="card-body text-center mt-3">
                                             <a class="h6 link" href="{{ route('shop.product', $products->slug)}}">{{$products->title}}</a>
                                             <div class="price mt-2">
-                                                <span class="h5"><strong>{{$products->price}}</strong></span>
-                                                <span class="h6 text-underline"><del>{{$products->compare_price}}</del></span>
+                                                <span class="h5"><strong>${{$products->price}}</strong></span>
+                                                <span class="h6 text-underline"><del>${{$products->compare_price}}</del></span>
                                             </div>
                                         </div>
                                     </div>

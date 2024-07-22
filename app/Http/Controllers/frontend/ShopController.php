@@ -8,6 +8,8 @@ use App\Models\SubCategory;
 use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class ShopController extends Controller
 {
@@ -15,6 +17,7 @@ class ShopController extends Controller
         $category = Category::where('status', 1)->with('sub_categories')->orderBy('name', 'ASC')->get();
         $brand = Brand::where('status', 1)->orderBy('name', 'ASC')->get();
         $products = Product::where('status', 1)->with('product_images');
+
 
 
         $categorySelected = '';
@@ -66,6 +69,12 @@ class ShopController extends Controller
 
 
         $product = $products->orderBy('id', 'DESC')->paginate(6);
+         // Limit the title length
+         $product->getCollection()->transform(function ($product) {
+            $product->title = Str::limit($product->title, 40);
+            return $product;
+        });
+
 
         $data['category'] =  $category;
         $data['brand'] =  $brand;
