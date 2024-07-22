@@ -56,6 +56,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->showHome = $request->showHome;
             $category->save();
 
             Session::flash('success', 'Category added successfully');
@@ -77,9 +78,9 @@ class CategoryController extends Controller
                 // create instance
                 $dPath = public_path() . '/uploads/category/thumb/' . $newImageName;
                 $img = Image::make($sPath);
-                $img->fit(450, 800, function ($constraint) {
-                    $constraint->upsize();
-                });
+                $img->resize(300, 300, function($constraint){
+                    $constraint->aspectRatio();
+                })->orientate();
                 $img->save($dPath);
 
 
@@ -149,6 +150,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->showHome = $request->showHome;
 
             $category->save();
 

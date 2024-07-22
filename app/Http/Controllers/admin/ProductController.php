@@ -56,6 +56,7 @@ class ProductController extends Controller
             'title' => 'required',
             'slug' => 'required|unique:products',
             'description' => 'required',
+            'short_description' => 'required',
             'price' => 'required',
             'sku' => 'required|unique:products,sku',
             'track_qty' => 'required|in:Yes,No',
@@ -73,6 +74,8 @@ class ProductController extends Controller
             $product->title = $request->title;
             $product->slug = $request->slug;
             $product->description = $request->description;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shippings_return;
             $product->sku = $request->sku;
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
@@ -84,6 +87,10 @@ class ProductController extends Controller
             $product->barcode = $request->barcode;
             $product->qty = $request->qty;
             $product->status = $request->status;
+
+            // nếu $request->related_products không rỗng thì trả về cho '$related_product' một chuỗi được ngăn cách bởi dấu phẩy
+
+            $product->related_product = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
             $product->save();
 
             // Product garllery save
@@ -163,7 +170,15 @@ class ProductController extends Controller
         $category = Category::with('sub_categories')->orderBy('name', 'ASC')->get();
         $brand = Brand::orderBy('name', 'ASC')->get();
 
-        return view('admin.products.edit', compact('category', 'brand', 'product', 'productImage'));
+        // fetch product iamge
+        $relatedProduct = [];
+        if($product->related_product != ""){
+            $relatedProductArray = explode(',',$product->related_product);
+            $relatedProduct = Product::whereIn('id', $relatedProductArray)->get();
+        }
+
+
+        return view('admin.products.edit', compact('category', 'brand', 'product', 'productImage', 'relatedProduct'));
     }
 
     /**
@@ -186,6 +201,7 @@ class ProductController extends Controller
             'title' => 'required',
             'slug' => 'required|unique:products,slug,'.$product->id.',id', //khi kiểm tra tính duy nhất, bỏ qua bản ghi hiện tại có id là $product->id.
             'description' => 'required',
+            'short_description' => 'required',
             'price' => 'required',
             'sku' => 'required|unique:products,sku,'.$product->id.',id', //khi kiểm tra tính duy nhất, bỏ qua bản ghi hiện tại có id là $product->id.
             'track_qty' => 'required|in:Yes,No',
@@ -202,6 +218,8 @@ class ProductController extends Controller
             $product->title = $request->title;
             $product->slug = $request->slug;
             $product->description = $request->description;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shipping_returns;
             $product->sku = $request->sku;
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
@@ -213,6 +231,10 @@ class ProductController extends Controller
             $product->barcode = $request->barcode;
             $product->qty = $request->qty;
             $product->status = $request->status;
+
+            // nếu $request->related_products không rỗng thì trả về cho '$related_product' một chuỗi được ngăn cách bởi dấu phẩy
+            $product->related_product = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
+
             $product->save();
 
 
@@ -264,5 +286,22 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully'
         ]);
 
+    }
+    public function getProduct(Request $request){
+
+        $term = $request->term;
+        $termProduct = [];
+        if($term != ""){
+            $products = Product::where('title', 'like','%'.$term.'%')->get();
+            if($products != null){
+                foreach($products as $product){
+                    $termProduct[] = array('id' => $product->id, 'text' => $product-> title);
+                }
+            }
+        }
+        return response()->json([
+            'tags' =>  $termProduct,
+            'status' => true,
+        ]);
     }
 }

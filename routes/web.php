@@ -9,32 +9,64 @@ use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
+use App\Http\Controllers\admin\ShippingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\frontend\AuthController;
+use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\FrontController;
+use App\Http\Controllers\frontend\ShopController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+// Front-end Route
+
+Route::get('/', [FrontController::class, 'index'])->name('front.home');
+Route::get('product/{slug}', [ShopController::class, 'product'])->name('shop.product');
+Route::get('shop/{categorySlug?}/{subCategorySlug?}', [ShopController::class, 'index'])->name('front.shop');
+Route::get('/cart', [CartController::class, 'cart'])->name('front.cart');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('front.addToCart');
+Route::post('/update-cart', [CartController::class, 'updateCart'])->name('front.updateCart');
+Route::post('delete-cart', [CartController::class, 'deleteCart'])->name('front.deleteCart');
+Route::get('checkout', [CartController::class, 'checkout'])->name('front.checkout');
+Route::post('process-checkout', [CartController::class, 'processCheckout'])->name('front.processCheckout');
+Route::get('thank/{order_id}', [CartController::class, 'thankYou'])->name('front.thankyou');
+Route::post('checkout-getordersummery', [CartController::class, 'getOrderSummery'])->name('front.getOrderSummery');
+
+
+
+// Authentication User
+Route::prefix('/account')->group(function(){
+    Route::middleware('guest')->group( function(){ // gọi đến middleware guest để kiểm tra xem các route này đã đăng nhập hay chưa, nếu như đã đăng nhập rồi thì sẽ bị chuyển hướng sang route khác ở phần guest
+        Route::get('/register', [AuthController::class, 'register'])->name('account.register');
+        Route::post('/process-register', [AuthController::class, 'processRegister'])->name('account.processRegister');
+        Route::get('/login', [AuthController::class, 'login'])->name('account.login');
+        Route::post('/login', [AuthController::class, 'authenticate'])->name('account.authenticate');
+
+    });
+    Route::middleware('auth')->group(function(){
+        // Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
+        Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+
+    });
+
 });
+
+
 
 // admin authentication
 Route::prefix('/admin')->group(function () {
     Route::middleware('admin.guest')->group(function () {
 
-        Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+        Route::get('/', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/login', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
+
     });
+
 
     //
     Route::middleware('admin.auth')->group(function () {
@@ -74,6 +106,15 @@ Route::prefix('/admin')->group(function () {
         Route::get('/product/profile{id}', [ProductController::class, 'show']) -> name('product.show');
         Route::post('/product/store', [ProductController::class, 'store']) -> name('product.store');
         Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']) -> name('product.delete');
+        Route::get('/get-products', [ProductController::class, 'getProduct'])->name('product.getProduct');
+
+        // Shipping Routes
+        // Route::get('/shipping', [ShippingController::class, 'show'])->name('shipping.show');
+        Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
+        Route::post('/shipping-create', [ShippingController::class, 'store'])->name('shipping.store');
+        Route::get('/shipping/edit/{id}', [ShippingController::class, 'edit'])->name('shipping.edit');
+        Route::put('/shipping-edit/{id}', [ShippingController::class, 'update'])->name('shipping.update');
+        Route::delete('/shipping-delete/{id}', [ShippingController::class, 'destroy'])->name('shipping.delete');
 
 
         // product-subcategorie

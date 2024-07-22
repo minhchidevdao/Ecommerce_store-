@@ -41,9 +41,26 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
+                                            <label for="short_description">Short Description</label>
+                                            <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote"
+                                                placeholder="short description"></textarea>
+                                            <p class="error "></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
                                             <label for="description">Description</label>
                                             <textarea name="description" id="description" cols="30" rows="10" class="summernote"
                                                 placeholder="Description"></textarea>
+                                            <p class="error "></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="shipping_returns">Shipping & returns</label>
+                                            <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote"
+                                                placeholder="shipping returns"></textarea>
                                             <p class="error "></p>
                                         </div>
                                     </div>
@@ -188,6 +205,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Related Product</h2>
+                                <div class="mb-3">
+                                    <select multiple class="related-product w-100" name="related_products[]" id="related_products">
+
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -202,6 +230,23 @@
 @endsection
 @section('js')
     <script>
+        $('.related-product').select2({
+            ajax: {
+                url: `{{ route('product.getProduct') }}`,
+                dataType: 'json',
+                tags: true,
+                multiple: true,
+                minimumInputLength: 3,
+                processResults: function (data) {
+                    return {
+                        results: data.tags // ánh xạ các trường dữ liệu vào id và text trong select2,
+                        // sau khi submit thì select2 chỉ gửi mảng id các sản phẩm đã chọn sang controller
+                    }
+                }
+            }
+        });
+
+
         $("#title").change(function() {
             let element = $(this);
             $("button[type=submit]").prop('disabled', true);

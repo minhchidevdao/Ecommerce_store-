@@ -19,8 +19,11 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
+
+        // kiểm tra xem người dùng đã xác thực với guard hiện tại chưa, ví dụ bên phía người dùng:  if (Auth::guard('admin')->attempt($request->only('email', 'password'))) -> true
+
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
+            if (Auth::guard($guard)->check()) { // trả về true nếu người dùng đã đăng nhập, sau đó thực hiện return
                 return redirect(RouteServiceProvider::HOME);
             }
         }

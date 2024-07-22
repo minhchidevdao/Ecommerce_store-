@@ -44,7 +44,7 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th width="60">ID</th>
+                            <th width="60">#</th>
                             <th width="80"></th>
                             <th>Product</th>
                             <th>Price</th>
@@ -69,10 +69,10 @@
                                         <img src="{{asset('uploads/product/small/default_product.jpg')}}" class="img-thumbnail" width="50" >
                                     @endif
                                 </td>
-                                <td><a href="{{ route('product.show', $item->id)}}">{{ $item->title }}</a></td>
+                                <td><a href="{{ route('product.show', $item->id)}}">{{substr($item->title, 0, 40) }}</a></td>
                                 <td>${{ $item->price }}</td>
                                 <td>{{ $item->qty }} left in Stock</td>
-                                <td>{{ $item->sku }}</td>
+                                <td>{{ substr($item->sku, 0, 20) }}</td>
                                 <td>
                                     @if ($item->status == 1)
                                         <svg class="text-success-500 h-6 w-6 text-success" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
