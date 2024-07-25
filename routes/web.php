@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\DiscountCodeController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\ProductController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\frontend\AuthController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\FrontController;
 use App\Http\Controllers\frontend\ShopController;
+use Illuminate\Support\Facades\Cookie;
 
 
 // Route::get('/', function () {
@@ -35,20 +37,22 @@ Route::get('checkout', [CartController::class, 'checkout'])->name('front.checkou
 Route::post('process-checkout', [CartController::class, 'processCheckout'])->name('front.processCheckout');
 Route::get('thank/{order_id}', [CartController::class, 'thankYou'])->name('front.thankyou');
 Route::post('checkout-getordersummery', [CartController::class, 'getOrderSummery'])->name('front.getOrderSummery');
+Route::post('apply-discount', [CartController::class, 'applyDiscount'])->name('front.applyDiscount');
+Route::post('remove-discount', [CartController::class, 'removeCoupon'])->name('front.removwDiscount');
 
 
 
 // Authentication User
 Route::prefix('/account')->group(function(){
-    Route::middleware('guest')->group( function(){ // gọi đến middleware guest để kiểm tra xem các route này đã đăng nhập hay chưa, nếu như đã đăng nhập rồi thì sẽ bị chuyển hướng sang route khác ở phần guest
+    Route::middleware('guest:web')->group( function(){ // gọi đến middleware guest để kiểm tra xem các route này đã đăng nhập hay chưa, nếu như đã đăng nhập rồi thì sẽ bị chuyển hướng sang route khác ở phần guest
         Route::get('/register', [AuthController::class, 'register'])->name('account.register');
         Route::post('/process-register', [AuthController::class, 'processRegister'])->name('account.processRegister');
         Route::get('/login', [AuthController::class, 'login'])->name('account.login');
         Route::post('/login', [AuthController::class, 'authenticate'])->name('account.authenticate');
 
     });
-    Route::middleware('auth')->group(function(){
-        // Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+    Route::middleware('auth:web')->group(function(){
+        Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
 
@@ -70,7 +74,7 @@ Route::prefix('/admin')->group(function () {
 
     //
     Route::middleware('admin.auth')->group(function () {
-        Route::get('dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+        Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
 
         // Category Routes
         Route::get('/category', [CategoryController::class, 'index'])->name('admin.categories');
@@ -124,6 +128,14 @@ Route::prefix('/admin')->group(function () {
         Route::post('/product-image/update', [ProductImageController::class, 'update']) -> name('product-image.update');
         Route::delete('/product-image', [ProductImageController::class, 'destroy']) -> name('product-image.destroy');
 
+        // DiscountCoupon Routes
+        Route::get('/coupons', [DiscountCodeController::class, 'index'])->name('coupons.index');
+        Route::get('/coupons/create', [DiscountCodeController::class, 'create'])->name('coupons.create');
+        Route::post('/coupons-create', [DiscountCodeController::class, 'store'])->name('coupons.store');
+        Route::get('/coupons/edit/{id}', [DiscountCodeController::class, 'edit'])->name('coupons.edit');
+        Route::put('/coupons-update/{id}', [DiscountCodeController::class, 'update'])->name('coupons.update');
+        Route::delete('/coupons-delete/{id}', [DiscountCodeController::class, 'destroy'])->name('coupons.destroy');
+
         //temp-image.create
         Route::post('/upload-temp-image', [TempImagesController::class, 'store'])->name('temp-images.create');
 
@@ -141,6 +153,6 @@ Route::prefix('/admin')->group(function () {
         })->name('getSlug');
 
         // Logout Route
-        Route::get('logout',  [HomeController::class, 'logout'])->middleware('auth')->name('admin.logout');
+        Route::get('/logout',  [HomeController::class, 'logout'])->middleware('auth')->name('admin.logout');
     });
 });

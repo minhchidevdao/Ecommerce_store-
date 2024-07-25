@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuthenticate extends Middleware
 {
@@ -18,9 +20,10 @@ class AdminAuthenticate extends Middleware
 
     protected function authenticate($request, array $guards)
     {
-        if ($this->auth->guard('admin')->check()) {
+        if ($this->auth->guard('admin')->check()) {;
             return $this->auth->shouldUse('admin');
         }
+
 
         $this->unauthenticated($request, ['admin']);
     }

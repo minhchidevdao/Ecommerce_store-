@@ -132,6 +132,10 @@
                                     <div class="h6"><strong>Subtotal</strong></div>
                                     <div class="h6"><strong>${{Cart::subtotal()}}</strong></div>
                                 </div>
+                                <div class="d-flex justify-content-between summery-end">
+                                    <div class="h6"><strong>Discount</strong></div>
+                                    <div class="h6" ><strong id="discount">${{ number_format($discount, 2)}}</strong></div>
+                                </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
                                     <div class="h6"><strong id="shippingCharge">${{ number_format($totalShippingCharge, 2)}}</strong></div>
@@ -141,6 +145,21 @@
                                     <div class="h5"><strong id="grandTotal">${{number_format($grandTotal, 2)}}</strong></div>
                                 </div>
                             </div>
+                            <div class="input-group apply-coupon mt-4">
+                                <input type="text" placeholder="Coupon Code" name="discount_code" id="discount_code" class="form-control">
+                                <button class="btn btn-dark" type="button" id="apply-discount" >Apply Coupon</button>
+                            </div>
+
+                            <div id="discount-response-wrapper">
+                                @if (Session::has('code'))
+                                    <div id="discount-response" class=" mt-4">
+                                        <strong>{{ Session::get('code')->code}}</strong>
+                                        <a id="remove-discount" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+
+                                    </div>
+                                @endif
+                            </div>
+
                         </div>
 
                         <div class="card payment-form">
@@ -266,7 +285,51 @@
             }
         });
     });
-    
+
+    $("#apply-discount").click(function(){
+
+        $.ajax({
+            url:`{{ route('front.applyDiscount') }}`,
+            type: 'POST',
+            data: {code: $("#discount_code").val(), country_id: $("#country").val()},
+            dataType: 'json',
+            success: function(response){
+                if(response.status === true){
+                    $("#shippingCharge").html('$'+response.shippingCharge);
+                    $("#grandTotal").html('$'+response.grandTotal);
+                    $("#discount").html('$'+response.discount);
+                    $("#discount-response-wrapper").html(response.discountString);
+
+                }else{
+                    // alert('coupons expires!');
+                    $("#discount-response-wrapper").html("<span class='text-danger'>"+response.message+"</span>");
+
+                }
+            }
+        });
+    })
+
+    $('body').on('click',"#remove-discount",(function(){
+
+        $.ajax({
+            url:`{{ route('front.removwDiscount') }}`,
+            type: 'POST',
+            data: { country_id: $("#country").val()},
+            dataType: 'json',
+            success: function(response){
+                if(response.status === true){
+                    $("#shippingCharge").html('$'+response.shippingCharge);
+                    $("#grandTotal").html('$'+response.grandTotal);
+                    $("#discount").html('$'+response.discount);
+                    $("#discount-response").html('');
+                    $("#discount_code").val('');
+
+
+                }
+            }
+        });
+    }));
+
 
 
 
