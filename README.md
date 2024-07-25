@@ -7,9 +7,3 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel Project ecommerce
-
-
-![127 0 0 1_8000_ (1)](https://github.com/user-attachments/assets/7a739025-bc8c-4324-aa44-e223dd3a1ab7)
-
-![127 0 0 1_8000_admin_product](https://github.com/user-attachments/assets/43e54e10-3eb0-4eaf-aa44-6e68c9059187)

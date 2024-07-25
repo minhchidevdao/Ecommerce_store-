@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Validator;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     public function login(){
+
         return view('front-end.account.login');
     }
     public function register(){
@@ -64,7 +66,12 @@ class AuthController extends Controller
 
         if($validator->passes()){
 
-            if(Auth::attempt(['email'=>$request->email, 'password'=>$request->password], $request->get('remember'))){
+            if(Auth::guard('web')->attempt(['email'=>$request->email, 'password'=>$request->password], $request->get('remember'))){
+                Log::info('AuthController Authenticate:', [
+                    'guard' => 'web',
+                    'authenticated' => Auth::guard('web')->check()
+                ]);
+
                 $request->session()->regenerate(); // tái tạo lại 1 ID session cho phiên
 
                 if(session()->has('url.intended')){
@@ -85,10 +92,16 @@ class AuthController extends Controller
 
 
     public function profile(){
+
         return view('front-end.account.profile');
     }
-    public function logout(){
-        Auth::logout();
+    public function logout(Request $request){
+        Log::info('User Logout Initiated');
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        Log::info('User Logout Completed');
+
         return redirect()->route('account.login')->with('success', 'You successfullt logout ');
     }
 

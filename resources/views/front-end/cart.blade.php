@@ -100,7 +100,7 @@
                             </div>
                             <div class="d-flex justify-content-between pb-2">
                                 <div>Subtotal</div>
-                                <div>{{Cart::subtotal()}}</div>
+                                <div>${{Cart::subtotal()}}</div>
                             </div>
 
                             <div class="pt-3">
@@ -108,10 +108,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="input-group apply-coupan mt-4">
-                        <input type="text" placeholder="Coupon Code" class="form-control">
-                        <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
-                    </div> --}}
+
                 </div>
                 @else
                     <div class="col-md-12">
