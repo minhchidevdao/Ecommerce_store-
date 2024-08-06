@@ -55,6 +55,8 @@ Route::prefix('/account')->group(function(){
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::get('/order', [AuthController::class, 'orders'])->name('account.order');
+        Route::get('/order-detail/{id}', [AuthController::class, 'orders_detail'])->name('account.order-detail');
 
     });
 

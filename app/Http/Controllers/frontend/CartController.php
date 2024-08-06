@@ -257,6 +257,7 @@ class CartController extends Controller
                 $discount = 0;
                 $grandTotal = $subTotal + $shipping;
                 $totalQty= 0;
+                $code = null;
 
                 if(session()->has('code')){
                     $code = session()->get('code');
@@ -287,12 +288,20 @@ class CartController extends Controller
                 $order->user_id = $user->id;
                 $order->subtotal = $subTotal;
                 $order->shipping = $shipping;
-                $order->coupon_code = $code->code;
-                $order->coupon_code_id = $code->id;
+                if(!empty($code)){
+                    $order->coupon_code = $code->code;
+                    $order->coupon_code_id = $code->id;
+                }else{
+                    $order->coupon_code = null;
+                    $order->coupon_code_id = null;
+                }
+               
                 $order->discount = $discount;
                 $order->grand_total = $grandTotal;
 
 
+                $order->payment_status = 'not paid';
+                $order->status = 'pending';
                 $order->first_name = $request->first_name;
                 $order->last_name = $request->last_name;
                 $order->email = $request->email;
