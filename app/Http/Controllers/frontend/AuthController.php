@@ -96,7 +96,7 @@ class AuthController extends Controller
 
     public function profile(){
         $user = auth::user();
-        
+
 
         return view('front-end.account.profile');
     }

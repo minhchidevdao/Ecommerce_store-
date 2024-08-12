@@ -44,10 +44,9 @@
                                             <h6 class="heading-xxxs text-muted">Shipped date:</h6>
                                             <!-- Text -->
                                             <p class="mb-lg-0 fs-sm fw-bold">
-                                                {{ \Carbon\Carbon::parse($orders->created_at)->format('d, M y , H:i')}}
-                                                {{-- <time datetime="2019-10-01">
-                                                    01 Oct, 2019
-                                                </time> --}}
+                                                <time>
+                                                    {{ \Carbon\Carbon::parse($orders->shipped_date)->format('d, M y , H:i')}}
+                                                </time>
                                             </p>
                                         </div>
                                         <div class="col-6 col-lg-3">

@@ -295,7 +295,7 @@ class CartController extends Controller
                     $order->coupon_code = null;
                     $order->coupon_code_id = null;
                 }
-               
+
                 $order->discount = $discount;
                 $order->grand_total = $grandTotal;
 
@@ -328,6 +328,7 @@ class CartController extends Controller
                     $orderItem->save();
 
                 }
+                orderMail($order->id, 'customer');
                 Session::flash('success', 'You have placed your order successfully. We will process and send the goods as soon as possible');
                 return response()->json([
                     'status' => true,
