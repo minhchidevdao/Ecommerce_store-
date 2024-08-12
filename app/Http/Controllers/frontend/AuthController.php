@@ -4,6 +4,9 @@ namespace App\Http\Controllers\frontend;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -92,6 +95,8 @@ class AuthController extends Controller
 
 
     public function profile(){
+        $user = auth::user();
+
 
         return view('front-end.account.profile');
     }
@@ -103,6 +108,39 @@ class AuthController extends Controller
         Log::info('User Logout Completed');
 
         return redirect()->route('account.login')->with('success', 'You successfullt logout ');
+    }
+
+    public function orders(){
+
+        $user = auth::user();
+        $orders = Order::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        return view('front-end.account.order', compact('orders'));
+    }
+
+    public function orders_detail(Request $request, $id){
+        $orders = Order::find($id);
+        $order_items = OrderItem::where('order_id', $orders->id)->get();
+        $products = [];
+
+        foreach($order_items as $order_item){
+            $product = Product::with('product_images')->where('id', $order_item->product_id)->first();
+            if($product){
+                $products[$order_item->product_id] = $product;
+            }
+        }
+
+
+
+
+
+
+        $data = [
+            'orders' => $orders,
+            'order_items' =>  $order_items,
+            'products' => $products,
+        ];
+        return view('front-end.account.order_detail', $data);
+
     }
 
 

@@ -307,7 +307,7 @@
                 }
             }
         });
-    })
+    });
 
     $('body').on('click',"#remove-discount",(function(){
 

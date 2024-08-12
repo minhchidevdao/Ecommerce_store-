@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DiscountCodeController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\HomeController;
+use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
@@ -24,6 +25,9 @@ use Illuminate\Support\Facades\Cookie;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::get('/test', function () {
+    orderMail(18);
+});
 // Front-end Route
 
 Route::get('/', [FrontController::class, 'index'])->name('front.home');
@@ -55,6 +59,8 @@ Route::prefix('/account')->group(function(){
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::get('/order', [AuthController::class, 'orders'])->name('account.order');
+        Route::get('/order-detail/{id}', [AuthController::class, 'orders_detail'])->name('account.order-detail');
 
     });
 
@@ -135,6 +141,15 @@ Route::prefix('/admin')->group(function () {
         Route::get('/coupons/edit/{id}', [DiscountCodeController::class, 'edit'])->name('coupons.edit');
         Route::put('/coupons-update/{id}', [DiscountCodeController::class, 'update'])->name('coupons.update');
         Route::delete('/coupons-delete/{id}', [DiscountCodeController::class, 'destroy'])->name('coupons.destroy');
+
+        // Order Routes
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders-detail/{id}', [OrderController::class, 'orderDetail'])->name('orders.detail');
+        Route::post('/orderChange-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
+        Route::post('/sendInovice/{id}', [OrderController::class, 'sendInoviceMail'])->name('orders.sendInoviceMail');
+
+
+
 
         //temp-image.create
         Route::post('/upload-temp-image', [TempImagesController::class, 'store'])->name('temp-images.create');
