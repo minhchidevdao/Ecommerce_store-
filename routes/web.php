@@ -43,6 +43,11 @@ Route::get('thank/{order_id}', [CartController::class, 'thankYou'])->name('front
 Route::post('checkout-getordersummery', [CartController::class, 'getOrderSummery'])->name('front.getOrderSummery');
 Route::post('apply-discount', [CartController::class, 'applyDiscount'])->name('front.applyDiscount');
 Route::post('remove-discount', [CartController::class, 'removeCoupon'])->name('front.removwDiscount');
+Route::post('/add-wishlist', [FrontController::class, 'addToWishlist'])->name('front-addToWishlist');
+Route::get('/wishlist', [AuthController::class, 'wishlish'])->name('front.wishlist');
+Route::post('/removeProductWishlist', [AuthController::class, 'removeProductWishlist'])->name('front.removeProductWishlist');
+
+
 
 
 
@@ -57,6 +62,7 @@ Route::prefix('/account')->group(function(){
     });
     Route::middleware('auth:web')->group(function(){
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::put('/updateProfile', [AuthController::class, 'updateProfile'])->name('account.updateProfile');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
         Route::get('/order', [AuthController::class, 'orders'])->name('account.order');

@@ -25,29 +25,32 @@
                             <h2 class="h5 mb-0 pt-2 pb-2">Personal Information</h2>
                         </div>
                         <div class="card-body p-4">
-                            <div class="row">
-                                <div class="mb-3">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" placeholder="Enter Your Name" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email">Email</label>
-                                    <input type="text" name="email" id="email" placeholder="Enter Your Email" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="phone">Phone</label>
-                                    <input type="text" name="phone" id="phone" placeholder="Enter Your Phone" class="form-control">
-                                </div>
+                            <form action="" name="profileForm" id="profileForm" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" id="name" value="{{ $user->name}}" placeholder="Enter Your Name" class="form-control">
+                                        <p class="invalid-feedback"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email">Email</label>
+                                        <input type="text" name="email" id="email" value="{{ $user->email}}" placeholder="Enter Your Email" class="form-control">
+                                        <p class="invalid-feedback"></p>
 
-                                <div class="mb-3">
-                                    <label for="phone">Address</label>
-                                    <textarea name="address" id="address" class="form-control" cols="30" rows="5" placeholder="Enter Your Address"></textarea>
-                                </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone">Phone</label>
+                                        <input type="text" name="phone" id="phone" value="{{ $user->phone}}" placeholder="Enter Your Phone" class="form-control">
+                                        <p class="invalid-feedback"></p>
 
-                                <div class="d-flex">
-                                    <button class="btn btn-dark">Update</button>
+                                    </div>
+
+                                    <div class="d-flex">
+                                        <button class="btn btn-dark">Update</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -55,4 +58,55 @@
         </div>
     </section>
 </main>
+@endsection
+@section('js')
+<script>
+    $("#profileForm").submit(function(e){
+        e.preventDefault();
+
+        let element =  $(this);
+        $("button[type=submit]").prop('disabled', true);
+
+        $.ajax({
+            url: `{{ route('account.updateProfile') }}`,
+            type: 'PUT',
+            data: element.serializeArray(),
+            dataType: 'json',
+            success: function(response){
+                if(response.status == false){
+                    console.log(response);
+
+                    let errors = response['errors'];
+                        if (errors['name']) {
+                            $('#name').addClass('is-invalid').siblings('p.invalid-feedback')
+                                .html(errors['name']);
+                        } else {
+                            $('#name').removeClass('is-invalid').siblings('p.invalid-feedback')
+                                .html("");
+                        }
+
+                        if (errors['email']) {
+                            $('#email').addClass('is-invalid').siblings('p.invalid-feedback')
+                                .html(errors['email']);
+                        } else {
+
+                            $('#email').removeClass('is-invalid').siblings('p.invalid-feedback')
+                                .html("");
+                        }
+                        if (errors['phone']) {
+                            $('#phone').addClass('is-invalid').siblings('p.invalid-feedback')
+                                .html(errors['phone']);
+                        } else {
+
+                            $('#phone').removeClass('is-invalid').siblings('p.invalid-feedback')
+                                .html("");
+                        }
+                }else{
+                    alert(response.message);
+                    location.reload();
+                }
+            }
+        });
+    });
+</script>
 @endsection

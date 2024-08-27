@@ -11,7 +11,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="wishlist.php"  class="nav-link font-weight-bold" role="tab" aria-controls="tab-register" aria-expanded="false"><i class="fas fa-heart"></i>
+        <a href="{{ route('front.wishlist')}}"  class="nav-link font-weight-bold" role="tab" aria-controls="tab-register" aria-expanded="false"><i class="fas fa-heart"></i>
             Wishlist
         </a>
     </li>

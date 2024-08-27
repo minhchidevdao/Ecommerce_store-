@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -95,10 +96,36 @@ class AuthController extends Controller
 
 
     public function profile(){
-        $user = auth::user();
+        $user = User::where('id', Auth::user()->id)->first();
+        return view('front-end.account.profile', compact('user'));
+    }
 
+    public function updateProfile(Request $request){
 
-        return view('front-end.account.profile');
+        $userId = Auth::user()->id;
+        $user = User::find($userId);
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$userId.',id',
+            'phone' => 'required'
+        ]);
+
+        if( $validator->passes()){
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => "updated profile for you successfully"
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
     public function logout(Request $request){
         Log::info('User Logout Initiated');
@@ -129,11 +156,6 @@ class AuthController extends Controller
             }
         }
 
-
-
-
-
-
         $data = [
             'orders' => $orders,
             'order_items' =>  $order_items,
@@ -141,6 +163,32 @@ class AuthController extends Controller
         ];
         return view('front-end.account.order_detail', $data);
 
+    }
+
+    public function wishlish(Request $request){
+
+        $wishlists = Wishlist::where('user_id', Auth::user()->id)->with('product')->get();
+
+        return view('front-end.account.wishlist', compact('wishlists'));
+
+    }
+
+    public function removeProductWishlist(Request $request){
+        $wishlistProduct = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $request->id)->first();
+
+        if($wishlistProduct == null){
+            session()->flash('error', 'Product not found!');
+            return response()->json([
+                'status' => false,
+            ]);
+        }else{
+            $wishlistProduct->delete();
+
+            session()->flash('success', 'Product deleted successfully');
+            return response()->json([
+                'status' => true,
+            ]);
+        }
     }
 
 
