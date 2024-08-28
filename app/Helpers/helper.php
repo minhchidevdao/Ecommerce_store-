@@ -4,6 +4,7 @@ use App\Mail\OrderMail;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Order;
+use App\Models\Page;
 use App\Models\ProductImage;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -46,20 +47,7 @@ use Illuminate\Support\Facades\Mail;
             'order' => $order,
             'userType' => $userType,
         ];
-        // dd(config('mail.mailers.smtp'));
-        //   dd([
-        //         'MAIL_HOST' => config('mail.mailers.smtp.host'),
-        //         'MAIL_PORT' => config('mail.mailers.smtp.port'),
-        //         'username' => config('mail.mailers.smtp.username'),
-        //         'ADMIN_EMAIL' => env('ADMIN_EMAIL'),
-        //         'example_check' => env('APP_NAME'),
-        //         'name' => config('app.name'),
-        //         'env' => config('app.env'),
-        //         'debug' => config('app.debug'),
-        //         'url' => config('app.url'),
-        //         'key' => config('app.key'),
 
-        //     ]);
 
         Mail::to($email)->send(new OrderMail($mailData));
 
@@ -69,5 +57,10 @@ use Illuminate\Support\Facades\Mail;
         $country = Country::where('id', $id)->first();
         return $country;
 
+    }
+
+    function staticPage(){
+        $page = Page::where('status', 1)->orderBy('name', 'ASC')->get();
+        return $page;
     }
 ?>

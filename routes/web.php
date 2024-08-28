@@ -12,6 +12,8 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\ShippingController;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\PageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\admin\TempImagesController;
@@ -19,6 +21,8 @@ use App\Http\Controllers\frontend\AuthController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\FrontController;
 use App\Http\Controllers\frontend\ShopController;
+
+
 use Illuminate\Support\Facades\Cookie;
 
 
@@ -46,6 +50,7 @@ Route::post('remove-discount', [CartController::class, 'removeCoupon'])->name('f
 Route::post('/add-wishlist', [FrontController::class, 'addToWishlist'])->name('front-addToWishlist');
 Route::get('/wishlist', [AuthController::class, 'wishlish'])->name('front.wishlist');
 Route::post('/removeProductWishlist', [AuthController::class, 'removeProductWishlist'])->name('front.removeProductWishlist');
+Route::get('/page/{slug}', [FrontController::class, 'page'])->name('front.page');
 
 
 
@@ -154,7 +159,21 @@ Route::prefix('/admin')->group(function () {
         Route::post('/orderChange-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
         Route::post('/sendInovice/{id}', [OrderController::class, 'sendInoviceMail'])->name('orders.sendInoviceMail');
 
+        // User Routes
+        Route::get('/Users', [UserController::class, 'index'])->name('user.index');
+        Route::get('/Users/create', [UserController::class, 'create'])->name('user.create');
+        Route::post('/Users-store', [UserController::class, 'store'])->name('user.store');
+        Route::get('/Users/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::put('/Users-update/{id}', [UserController::class, 'update'])->name('user.update');
+        Route::delete('/Users-delete', [UserController::class, 'delete'])->name('user.delete');
 
+        // Page Routes
+        Route::get('/page', [PageController::class, 'index'])->name('page.index');
+        Route::get('/page/create', [PageController::class, 'create'])->name('page.create');
+        Route::post('/page-create', [PageController::class, 'store'])->name('page.store');
+        Route::get('/page/edit/{id}', [PageController::class, 'edit'])->name('page.edit');
+        Route::put('/page-update/{id}', [PageController::class, 'update'])->name('page.update');
+        Route::delete('/page-delete', [PageController::class, 'destroy'])->name('page.delete');
 
 
         //temp-image.create
