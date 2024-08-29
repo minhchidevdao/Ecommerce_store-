@@ -8,8 +8,8 @@
         <div class="container">
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                    <li class="breadcrumb-item">Login</li>
+                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home')}}">Home</a></li>
+                    <li class="breadcrumb-item">reset Password</li>
                 </ol>
             </div>
         </div>
@@ -30,27 +30,25 @@
 
             @endif
             <div class="login-form">
-                <form action="{{ route('account.authenticate')}}" method="post" name="formLogin" id="formLogin">
+                <form action="{{ route('front.processResetPassword')}}" method="post" name="formForgotPassword" id="formForgotPassword">
                     @csrf
+                    <input type="hidden" name="token" value="{{ $token}}">
                     <h4 class="modal-title">Login to Your Account</h4>
                     <div class="form-group">
-                        <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email')}}" required="required">
-                        @error('email')
+                        <input type="password" id="new_password" name="new_password" class="form-control @error('password') is-invalid @enderror" placeholder="new password" value="{{ old('password')}}" required="required">
+                        @error('new_password')
                             <p class="invalid-feedback">{{$message}}</p>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password" class="form-control  @error('password') is-invalid @enderror" placeholder="Password" required="required">
-                        @error('password')
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control @error('confirm_password') is-invalid @enderror" placeholder="confirm_password" value="{{ old('confirm_password')}}" required="required">
+                        @error('confirm_password')
                             <p class="invalid-feedback">{{$message}}</p>
                         @enderror
                     </div>
-                    <div class="form-group small">
-                        <a href="{{ route('front.forgotPassword')}}" class="forgot-link">Forgot Password?</a>
-                    </div>
-                    <input type="submit" class="btn btn-outline-success" value="Login">
+                    <input type="submit" class="btn btn-outline-success" value="Submit">
                 </form>
-                <div class="text-center small">Don't have an account? <a class="text-primary" href="{{ route('account.register')}}">Sign up</a></div>
+                <div class="text-center small"> <a class="text-primary" href="{{ route('account.login')}}">Login</a></div>
             </div>
         </div>
     </section>

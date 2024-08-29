@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\PageController;
+use App\Http\Controllers\admin\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\admin\TempImagesController;
@@ -50,7 +51,17 @@ Route::post('remove-discount', [CartController::class, 'removeCoupon'])->name('f
 Route::post('/add-wishlist', [FrontController::class, 'addToWishlist'])->name('front-addToWishlist');
 Route::get('/wishlist', [AuthController::class, 'wishlish'])->name('front.wishlist');
 Route::post('/removeProductWishlist', [AuthController::class, 'removeProductWishlist'])->name('front.removeProductWishlist');
+
+// page
 Route::get('/page/{slug}', [FrontController::class, 'page'])->name('front.page');
+Route::post('/send-contact', [FrontController::class, 'sendContactEmail'])->name('front.sendContactEmail');
+
+// forgot password
+Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('front.forgotPassword');
+Route::post('/process-forgotpassword', [AuthController::class, 'processForgotPassword'])->name('front.processForgotPassword');
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('front.resetPassword');
+Route::post('/process-reset-password', [AuthController::class, 'processResetPassword'])->name('front.processResetPassword');
+
 
 
 
@@ -72,6 +83,10 @@ Route::prefix('/account')->group(function(){
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
         Route::get('/order', [AuthController::class, 'orders'])->name('account.order');
         Route::get('/order-detail/{id}', [AuthController::class, 'orders_detail'])->name('account.order-detail');
+
+        // Change Password
+        Route::get('/show-password', [AuthController::class, 'showChangePassword'])->name('account.showChangePassword');
+        Route::put('/process-changepassword', [AuthController::class, 'processChangePassword'])->name('account.processChangePassword');
 
     });
 
@@ -174,6 +189,10 @@ Route::prefix('/admin')->group(function () {
         Route::get('/page/edit/{id}', [PageController::class, 'edit'])->name('page.edit');
         Route::put('/page-update/{id}', [PageController::class, 'update'])->name('page.update');
         Route::delete('/page-delete', [PageController::class, 'destroy'])->name('page.delete');
+
+        // Setting
+        Route::get('/change-passwordadmin', [SettingController::class, 'showChangePasswordForm'])->name('setting.showChangePasswordForm');
+        Route::put('/process-changepasswordadmin', [SettingController::class, 'processChangePassword'])->name('setting.processChangePassword');
 
 
         //temp-image.create
