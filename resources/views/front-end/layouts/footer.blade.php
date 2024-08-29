@@ -16,11 +16,12 @@
 				<div class="footer-card">
 					<h3>Important Links</h3>
 					<ul>
-						<li><a href="about-us.php" title="About">About</a></li>
-						<li><a href="contact-us.php" title="Contact Us">Contact Us</a></li>
-						<li><a href="#" title="Privacy">Privacy</a></li>
-						<li><a href="#" title="Privacy">Terms & Conditions</a></li>
-						<li><a href="#" title="Privacy">Refund Policy</a></li>
+                        @foreach (staticPage() as $page)
+                            @if(!empty($page))
+                                <li><a href="{{ route('front.page', $page->slug)}}" title="{{ $page->name}}">{{ $page->name}}</a></li>
+                            @endif
+                        @endforeach
+
 					</ul>
 				</div>
 			</div>
@@ -49,6 +50,25 @@
 		</div>
 	</div>
 </footer>
+
+<!-- Modal wishlist-->
+
+<div class="modal fade" id="wishlistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            ...
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="{{ asset('frontend-asset/js/jquery-3.6.0.min.js')}}"></script>
 <script src="{{ asset('frontend-asset/js/bootstrap.bundle.5.1.3.min.js')}}"></script>
 <script src="{{ asset('frontend-asset/js/instantpages.5.1.0.min.js')}}"></script>
@@ -96,6 +116,36 @@ function addToCart(id){
             }
         }
 
+    });
+}
+
+function addToWishlist(id) {
+    $.ajax({
+
+        url: `{{ route('front-addToWishlist') }}`,
+        type: 'POST',
+        data: {id:id},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response){
+
+            if(response.status == true){
+               $("#wishlistModal .modal-body").html(response.message);
+               $("#wishlistModal").modal('show');
+            }else{
+               window.location.href = "{{ route('account.login')}}";
+
+            }
+        },
+        error: function(xhr, status, error) {
+            if (xhr.status === 401) {
+                window.location.href = "{{ route('account.login') }}";
+            } else {
+                console.log('An error occurred: ' + error);
+            }
+        }
     });
 }
 </script>

@@ -36,6 +36,9 @@ class ShopController extends Controller
             $products = $products-> where('sub_category_id',  $sub_categories->id);
             $subCategorySelected = $sub_categories->id;
         }
+        if(!empty($request->get('search'))){
+            $products = Product::where('title', 'like', '%'.$request->get('search').'%');
+        }
 
 
         // Brand filter
@@ -99,8 +102,9 @@ class ShopController extends Controller
         $relatedProduct = [];
         if($product->related_product != ""){
             $relatedProductArray = explode(',',$product->related_product);
-            $relatedProduct = Product::whereIn('id', $relatedProductArray)->with('product_images')->get();
+            $relatedProduct = Product::whereIn('id', $relatedProductArray)->where('status', 1)->with('product_images')->get();
         }
+        // dd($relatedProduct);
 
         return view('front-end.product', compact('product', 'relatedProduct'));
 

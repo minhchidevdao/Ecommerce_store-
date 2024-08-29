@@ -121,12 +121,26 @@
                                                     <img class="card-img-top" src="{{ asset('uploads/product/small/default_product.jpg')}}" alt="">
                                                 @endif
                                             </a>
-                                            <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                            <a class="whishlist" href="javascript:void(0);" onclick="addToWishlist({{ $products->id }})"><i class="far fa-heart"></i></a>
 
                                             <div class="product-action">
-                                                <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$products->id}})">
-                                                    <i class="fa fa-shopping-cart"></i> Add To Cart
-                                                </a>
+                                                @if ( $products->track_qty == 'Yes')
+                                                    @if ( $products->qty > 0)
+                                                        <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$products->id}})">
+                                                            <i class="fa fa-shopping-cart"></i> Add To Cart
+                                                        </a>
+                                                    @else
+                                                        <a class="btn btn-dark" href="javascript:void(0);">
+                                                            <i class="fa fa-shopping-cart"></i> Out of stock
+                                                        </a>
+                                                    @endif
+
+                                                @else
+                                                    <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$products->id}})">
+                                                        <i class="fa fa-shopping-cart"></i> Add To Cart
+                                                    </a>
+                                                @endif
+
                                             </div>
                                         </div>
                                         <div class="card-body text-center mt-3">
@@ -204,6 +218,10 @@
         // Brands filters
         if(brands.length > 0){
             url = url+'&brand='+brands.toString()
+        }
+        let search = $("#search").val();
+        if(search.length > 0){
+            url += '&search='+search;
         }
 
         // Sorting filter
