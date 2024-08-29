@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\SubCategory;
 use App\Models\TempImage;
+use App\Models\ProductRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
@@ -303,5 +304,36 @@ class ProductController extends Controller
             'tags' =>  $termProduct,
             'status' => true,
         ]);
+    }
+
+
+    public function productRatings(){
+        $ratings = ProductRating::select('product_ratings.*', 'products.title as productTitle')->orderBy('product_ratings.created_at', 'DESC');
+        $ratings = $ratings->leftJoin('products', 'products.id', 'product_ratings.product_id');
+        $ratings = $ratings->paginate(10);
+        return view('admin.products.rating', compact('ratings'));
+    }
+
+    public function changeRatingStatus(Request $request){
+        $productRating = ProductRating::find($request->id);
+
+        $productRating->status = $request->status;
+        $productRating->save();
+        session()->flash('success', 'Change rating status successfully');
+        return response()->json([
+            'status' => true,
+
+        ]);
+    }
+
+    public function deleteRating(Request $request){
+       $productRating = ProductRating::find($request->id);
+       $productRating->delete();
+       session()->flash('success', 'Rating delete successfully');
+       return response()->json([
+           'status' => true,
+
+       ]);
+
     }
 }

@@ -62,6 +62,9 @@ Route::post('/process-forgotpassword', [AuthController::class, 'processForgotPas
 Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('front.resetPassword');
 Route::post('/process-reset-password', [AuthController::class, 'processResetPassword'])->name('front.processResetPassword');
 
+// Rating
+Route::post('/save-rating-product/{id}', [ShopController::class, 'saveRating'])->name('front.saveRating');
+
 
 
 
@@ -143,9 +146,13 @@ Route::prefix('/admin')->group(function () {
         Route::post('/product/store', [ProductController::class, 'store']) -> name('product.store');
         Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']) -> name('product.delete');
         Route::get('/get-products', [ProductController::class, 'getProduct'])->name('product.getProduct');
+        //product ratings
+        Route::get('/ratings', [ProductController::class, 'productRatings']) -> name('product.rating');
+        Route::put('/change-ratings-status', [ProductController::class, 'changeRatingStatus']) -> name('product.changeRatingStatus');
+        Route::delete('/delete-ratings', [ProductController::class, 'deleteRating']) -> name('product.deleteRating');
 
         // Shipping Routes
-        // Route::get('/shipping', [ShippingController::class, 'show'])->name('shipping.show');
+
         Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
         Route::post('/shipping-create', [ShippingController::class, 'store'])->name('shipping.store');
         Route::get('/shipping/edit/{id}', [ShippingController::class, 'edit'])->name('shipping.edit');

@@ -354,6 +354,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(file, response) {
+                console.log(response);
                 let html = `
                     <div class="col-md-3">
                         <div class="card" id="image-row-${response.image_id}">
